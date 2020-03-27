@@ -27,4 +27,4 @@ opened for example in Microsoft Excel and sorted by number of matches.
 
 # Download
 
-Latest release from [releases](https://github.com/tuokri/RS2IPParser/releases).
+Latest release (RS2IPParser.exe) from [releases](https://github.com/tuokri/RS2IPParser/releases).

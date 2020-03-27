@@ -56,7 +56,6 @@ def main():
             pass
 
     out_file = f"{pf}.csv"
-    print(f"writing {out_file}")
 
     print(f"writing results to {out_file}...")
     with open(out_file, "w") as csv_file:

@@ -22,3 +22,7 @@ Using Python:
 
 The script will write output to `Launch.log.csv`, which can then be
 opened for example in Microsoft Excel and sorted by number of matches.
+
+# Download
+
+Latest release from [releases](https://github.com/tuokri/RS2IPParser/releases).

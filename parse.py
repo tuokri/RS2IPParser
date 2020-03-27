@@ -73,19 +73,25 @@ def main():
     progress = f"{parsed} bytes parsed"
     print("\b" * (len(progress) + 1), end="")
     print(progress)
-    print(f"found {len(ip_dict)} total IP addresse(s)")
-    print(f"found {len(valid_ips)} valid IP addresse(s)")
-    print(f"found {len(admin_ips)} admin IP addresse(s)")
+    print(f"found {len(ip_dict)} total IP address(es)")
+    print(f"found {len(valid_ips)} valid IP address(es)")
+    print(f"found {len(admin_ips)} admin IP address(es)")
     for vi in valid_ips:
         try:
             ip_dict.pop(vi)
         except KeyError:
             pass
 
+    for ai in admin_ips:
+        try:
+            ip_dict.pop(ai)
+        except KeyError:
+            pass
+
     out_file = f"{pf}.csv"
 
     print(f"writing results to '{out_file}' with total {len(ip_dict)} "
-          f"suspicious IP addresses...")
+          f"suspicious IP address(es)...")
     with open(out_file, "w") as csv_file:
         csv_file.write("IP,matches\n")
         for key, value in ip_dict.items():

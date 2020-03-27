@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 
 """
-Parse suspicious IPs in Rising Storm 2: Vietnam server logs.
+Parse suspicious IP addresses in Rising Storm 2: Vietnam
+server logs.
 
 The output log file is in CSV format, where the first column
-is the IP and the second column is the number of the matches
-for the IP.
+is the IP address and the second column is the number of the
+matches for the IP address.
 
 Number of matches equals the number of log lines the IP
-was seen in the log file.
+addresse was seen in the log file.
 
-The script will automatically ignore IPs with valid player
-information (Steam ID) associated with them.
+The script will automatically ignore IP addresses with valid
+player information (Steam ID) associated with them. Admin login
+IP addresses are also ignored.
 """
 
 import argparse
@@ -21,6 +23,7 @@ from collections import defaultdict
 
 IP_PATTERN = re.compile(r".*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*")
 VALID_IP = re.compile(r".*PlayerIP:.*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*")
+ADMIN_IP = re.compile(r".*admin\slogin.*RemoteAddr:\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*")
 
 
 def parse_args() -> Namespace:
@@ -35,20 +38,44 @@ def main():
     args = parse_args()
     pf = args.file
     valid_ips = set()
+    admin_ips = set()
 
     print(f"parsing '{pf}'")
+    parsed = 0
     with open(pf, "r", encoding="latin-1") as f:
-        for line in f:
-            match = IP_PATTERN.search(line)
-            is_valid = VALID_IP.search(line)
-            if is_valid:
-                valid_ips.add(is_valid.group(1))
-            if match:
-                ip = match.group(1)
-                ip_dict[ip] += 1
+        for i, line in enumerate(f):
+            line_size = len(line.encode('latin-1'))
+            if i % 50 == 0:
+                progress = f"{parsed + line_size} bytes parsed"
+                print("\b" * (len(progress) + 1), end="")
+                print(progress, end="")
 
-    print(f"found {len(ip_dict)} total IPs")
-    print(f"found {len(valid_ips)} valid IPs")
+            match = IP_PATTERN.search(line)
+            if match:
+                is_valid = VALID_IP.search(line)
+
+                is_admin = False
+                if not is_valid:
+                    is_admin = ADMIN_IP.search(line)
+
+                if is_admin:
+                    admin_ip = is_admin.group(1)
+                    admin_ips.add(admin_ip)
+                elif is_valid:
+                    valid_ip = is_valid.group(1)
+                    valid_ips.add(valid_ip)
+                else:
+                    ip = match.group(1)
+                    ip_dict[ip] += 1
+
+            parsed += line_size
+
+    progress = f"{parsed} bytes parsed"
+    print("\b" * (len(progress) + 1), end="")
+    print(progress)
+    print(f"found {len(ip_dict)} total IP addresse(s)")
+    print(f"found {len(valid_ips)} valid IP addresse(s)")
+    print(f"found {len(admin_ips)} admin IP addresse(s)")
     for vi in valid_ips:
         try:
             ip_dict.pop(vi)
@@ -57,7 +84,8 @@ def main():
 
     out_file = f"{pf}.csv"
 
-    print(f"writing results to {out_file}...")
+    print(f"writing results to '{out_file}' with total {len(ip_dict)} "
+          f"suspicious IP addresses...")
     with open(out_file, "w") as csv_file:
         csv_file.write("IP,matches\n")
         for key, value in ip_dict.items():

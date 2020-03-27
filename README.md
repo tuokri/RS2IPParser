@@ -17,6 +17,8 @@ information (Steam ID) associated with them.
 Using the standalone executable (via cmd.exe):
 ```RS2IPParser.exe Launch.log```
 
+![Example](example_gif.gif)
+
 Using Python:
 ```python parse.py Launch.log```
 

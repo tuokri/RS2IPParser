@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Parse suspicious IPs in Rising Storm 2: Vietnam server logs.
 

@@ -10,7 +10,7 @@ for the IP.
 Number of matches equals the number of log lines the IP
 was seen in the log file.
 
-The script will automatically ignore IPs valid player
+The script will automatically ignore IPs with valid player
 information (Steam ID) associated with them.
 """
 

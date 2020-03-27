@@ -14,7 +14,7 @@ information (Steam ID) associated with them.
 
 # Usage Examples
 
-Using the standalone executable:
+Using the standalone executable (via cmd.exe):
 ```RS2IPParser.exe Launch.log```
 
 Using Python:

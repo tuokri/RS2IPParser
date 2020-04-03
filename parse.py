@@ -9,7 +9,7 @@ is the IP address and the second column is the number of the
 matches for the IP address.
 
 Number of matches equals the number of log lines the IP
-addresse was seen in the log file.
+address was seen in the log file.
 
 The script will automatically ignore IP addresses with valid
 player information (Steam ID) associated with them. Admin login
@@ -21,8 +21,8 @@ import re
 from argparse import Namespace
 from collections import defaultdict
 
-IP_PATTERN = re.compile(r".*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*")
-VALID_IP = re.compile(r".*PlayerIP:.*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*")
+IP_PATTERN = re.compile(r".*\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*")
+VALID_IP = re.compile(r".*PlayerIP:\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*")
 ADMIN_IP = re.compile(r".*admin\slogin.*RemoteAddr:\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*")
 
 
